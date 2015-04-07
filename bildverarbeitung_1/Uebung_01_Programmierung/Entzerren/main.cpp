@@ -72,6 +72,8 @@ int main(int argc, char* argv[])
 			{0.0,             0.0,               1.0}
 		};
 
+/* Aufgabe 3 hier - 03_Kamerakalibrierung.pdf 3.6.1 - 3.6.2*/		
+		
 		// Vektor fuer Positionen der vier Eckpunkte des verzerrten Bilds definieren und fuellen
 		vector<pair<double, double> > corners_d;
 		corners_d.push_back(pair<double, double>( 0.0,                   0.0                   )); // left bottom
