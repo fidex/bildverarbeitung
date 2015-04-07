@@ -62,7 +62,7 @@ int main(int argc, char* argv[])
 		// Intrinsische Parameter der entzerrten, senkrecht ausgereichteten Kamera bestimmen
 		// (Aufgabe 3)
 		//
-#if 0
+#if 1
 		// 3x3-Matrix für die intrinsischen Parameter der neuen Kamera definieren und fuellen:
 		// - fx vom verzerrten Bild als Brennweite in u- und in v-Richtung übernehmen
 		// - cx,cy zunaechst zu 0 setzen
@@ -72,14 +72,14 @@ int main(int argc, char* argv[])
 			{0.0,             0.0,               1.0}
 		};
 
-/* Aufgabe 3 hier - 03_Kamerakalibrierung.pdf 3.6.1 - 3.6.2*/
+/*03_Kamerakalibrierung.pdf 3.6.1 - 3.6.2*/
 
 		// Vektor fuer Positionen der vier Eckpunkte des verzerrten Bilds definieren und fuellen
 		vector<pair<double, double> > corners_d;
 		corners_d.push_back(pair<double, double>( 0.0,                   0.0                   )); // left bottom
-		corners_d.push_back(pair<double, double>( ??? ,                  ???                   )); // left top
-		corners_d.push_back(pair<double, double>( ??? ,                  ???                   )); // right bottom
-		corners_d.push_back(pair<double, double>( ??? ,                  ???                   )); // right top
+		corners_d.push_back(pair<double, double>( 0.0 ,                  img_d.Height()        )); // left top
+		corners_d.push_back(pair<double, double>( img_d.Width() ,                  0.0           )); // right bottom
+		corners_d.push_back(pair<double, double>( img_d.Width() ,                  img_d.Height())); // right top
 
 		// Vektor fuer die Positionen der vier Eckpunkte des verzerrten Bilds im entzerrten Bild definieren
         vector<pair<double, double> > corners;
@@ -89,20 +89,41 @@ int main(int argc, char* argv[])
 
 		// Minimale um maximale Positionen der vier Eckpunkte des verzerrten Bilds
 		// (umschließendes Rechteck) im entzerrten Bild bestimmen
-		?? ?? ?? ?? ?
-		?? ?? ?? ?? ?
-		...
-		?? ?? ?? ?? ?
+        double leftest_x;
+        double rightest_x;
+        double top_y;
+        double bottom_y;
+        if(corners[0][0] < corners[1][0]){
+            leftest_x = corners[1][0];
+        }else{
+            leftest_x = corners[0][0];
+        }
+        if(corners[2][0] < corners[3][0]){
+            rightest_x = corners[3][0];
+        }else{
+            rightest_x = corners[2][0];
+        }
+        if(corners[1][1] < corners[3][1]){
+            top_y = corners[3][1];
+        }else{
+            top_y = corners[1][1];
+        }
+        if(corners[0][1] < corners[2][1]){
+            bottom_y = corners[0][1];
+        }else{
+            bottom_y = corners[2][1];
+        }
 
-		// Intrinsische Parameter cx und cy setzen und ausgeben
-		intrinsic[0][2] = ??;
-		intrinsic[1][2] = ??;
-		cout << "cx=" << intrinsic[0][2] << ", cy=" << intrinsic[1][2] << endl;
-
-		// Breite und Höhe des entzerrten Bilds ermitteln
-		unsigned int height( ?? );
-		unsigned int width ( ?? );
-		cout << "Breite=" << width << ", Hoehe=" << height << endl;
+        cout << "leftest_x" << leftest_x << " rightest_x:" << rightest_x << " top_y:" << " bottom_y:" << bottom_y << endl;
+//		// Intrinsische Parameter cx und cy setzen und ausgeben
+////		intrinsic[0][2] = ??;
+////		intrinsic[1][2] = ??;
+//		cout << "cx=" << intrinsic[0][2] << ", cy=" << intrinsic[1][2] << endl;
+//
+//		// Breite und Höhe des entzerrten Bilds ermitteln
+////		unsigned int height( ?? );
+////		unsigned int width ( ?? );
+//		cout << "Breite=" << width << ", Hoehe=" << height << endl;
 
 #endif
 
