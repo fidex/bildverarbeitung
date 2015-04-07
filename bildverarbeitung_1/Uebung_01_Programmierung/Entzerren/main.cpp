@@ -72,8 +72,8 @@ int main(int argc, char* argv[])
 			{0.0,             0.0,               1.0}
 		};
 
-/* Aufgabe 3 hier - 03_Kamerakalibrierung.pdf 3.6.1 - 3.6.2*/		
-		
+/* Aufgabe 3 hier - 03_Kamerakalibrierung.pdf 3.6.1 - 3.6.2*/
+
 		// Vektor fuer Positionen der vier Eckpunkte des verzerrten Bilds definieren und fuellen
 		vector<pair<double, double> > corners_d;
 		corners_d.push_back(pair<double, double>( 0.0,                   0.0                   )); // left bottom
@@ -112,10 +112,10 @@ int main(int argc, char* argv[])
 		//
 #if 0
 		// Entzerrtes "RGB_Pixel"-Bild "img" definieren
-		?? ?? ?? ?? ?? ?
+		Img<RGB_Pixel> img;
 
 		// Entzerrung durchführen: "img" aus "img_d" berechnen
-		UndistoreImage( ?? , ?? , ?? , ?? , ?? , ?? );
+		UndistoreImage( &img, intrinsic , &img_d , intrinsic_d , distCoeffs , rotVect );
 
 		// Entzerrtes Bild "img" wegspeichern
 		cout << "Schreibe Bild: " << ImageFile + "_entzerrt.bmp" << endl;
