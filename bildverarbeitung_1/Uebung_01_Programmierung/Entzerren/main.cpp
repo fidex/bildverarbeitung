@@ -82,10 +82,10 @@ int main(int argc, char* argv[])
 		corners_d.push_back(pair<double, double>( ??? ,                  ???                   )); // right top
 
 		// Vektor fuer die Positionen der vier Eckpunkte des verzerrten Bilds im entzerrten Bild definieren
-		?? ?? ?? ?
+        vector<pair<double, double> > corners;
 
 		// Eckpunkte des verzerrten Bildes im unverzerrten Bild (noch mit cx=0,cy=0) bestimmen
-		UndistorePoints( ?? , ?? , ?? , ?? , ?? , ?? );
+		UndistorePoints( &corners , intrinsic , &corners_d , intrinsic_d , distCoeffs , rotVect );
 
 		// Minimale um maximale Positionen der vier Eckpunkte des verzerrten Bilds
 		// (umschließendes Rechteck) im entzerrten Bild bestimmen
@@ -102,7 +102,7 @@ int main(int argc, char* argv[])
 		// Breite und Höhe des entzerrten Bilds ermitteln
 		unsigned int height( ?? );
 		unsigned int width ( ?? );
-		cout << "Breite=" << width << ", Hoehe" << height << endl;
+		cout << "Breite=" << width << ", Hoehe=" << height << endl;
 
 #endif
 
