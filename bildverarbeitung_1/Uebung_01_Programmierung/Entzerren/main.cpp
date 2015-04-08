@@ -82,10 +82,11 @@ int main(int argc, char* argv[])
 		corners_d.push_back(pair<double, double>( img_d.Width() ,                  img_d.Height())); // right top
 
 		// Vektor fuer die Positionen der vier Eckpunkte des verzerrten Bilds im entzerrten Bild definieren
+               // Vektor fuer die Positionen der vier Eckpunkte des verzerrten Bilds im entzerrten Bild definieren
         vector<pair<double, double> > corners;
 
-		// Eckpunkte des verzerrten Bildes im unverzerrten Bild (noch mit cx=0,cy=0) bestimmen
-		UndistorePoints( &corners , intrinsic , &corners_d , intrinsic_d , distCoeffs , rotVect );
+                // Eckpunkte des verzerrten Bildes im unverzerrten Bild (noch mit cx=0,cy=0) bestimmen
+        UndistorePoints( corners , intrinsic , corners_d , intrinsic_d , distCoeffs , rotVect );
 
 		// Minimale um maximale Positionen der vier Eckpunkte des verzerrten Bilds
 		// (umschlieﬂendes Rechteck) im entzerrten Bild bestimmen
@@ -93,28 +94,28 @@ int main(int argc, char* argv[])
         double rightest_x;
         double top_y;
         double bottom_y;
-        if(corners[0][0] < corners[1][0]){
-            leftest_x = corners[1][0];
+         if(corners[0].first < corners[1].first){
+            leftest_x = corners[1].first;
         }else{
-            leftest_x = corners[0][0];
+            leftest_x = corners[0].first;
         }
-        if(corners[2][0] < corners[3][0]){
-            rightest_x = corners[3][0];
+        if(corners[2].first < corners[3].first){
+            rightest_x = corners[3].first;
         }else{
-            rightest_x = corners[2][0];
+            rightest_x = corners[2].first;
         }
-        if(corners[1][1] < corners[3][1]){
-            top_y = corners[3][1];
+        if(corners[1].second < corners[3].second){
+            top_y = corners[3].second;
         }else{
-            top_y = corners[1][1];
+            top_y = corners[1].second;
         }
-        if(corners[0][1] < corners[2][1]){
-            bottom_y = corners[0][1];
+        if(corners[0].second < corners[2].second){
+            bottom_y = corners[0].second;
         }else{
-            bottom_y = corners[2][1];
+            bottom_y = corners[2].second;
         }
 
-        cout << "leftest_x" << leftest_x << " rightest_x:" << rightest_x << " top_y:" << " bottom_y:" << bottom_y << endl;
+        cout << "leftest_x" << leftest_x << " rightest_x:" << rightest_x << " top_y:" << top_y << " bottom_y:" << bottom_y << endl;
 //		// Intrinsische Parameter cx und cy setzen und ausgeben
 ////		intrinsic[0][2] = ??;
 ////		intrinsic[1][2] = ??;
