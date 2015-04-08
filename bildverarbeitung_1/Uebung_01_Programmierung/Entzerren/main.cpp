@@ -116,15 +116,15 @@ int main(int argc, char* argv[])
         }
 
         cout << "leftest_x" << leftest_x << " rightest_x:" << rightest_x << " top_y:" << top_y << " bottom_y:" << bottom_y << endl;
-//		// Intrinsische Parameter cx und cy setzen und ausgeben
-////		intrinsic[0][2] = ??;
-////		intrinsic[1][2] = ??;
-//		cout << "cx=" << intrinsic[0][2] << ", cy=" << intrinsic[1][2] << endl;
-//
-//		// Breite und Höhe des entzerrten Bilds ermitteln
-////		unsigned int height( ?? );
-////		unsigned int width ( ?? );
-//		cout << "Breite=" << width << ", Hoehe=" << height << endl;
+		// Intrinsische Parameter cx und cy setzen und ausgeben
+		intrinsic[0][2] = leftest_x;
+		intrinsic[1][2] = bottom_y;
+		cout << "cx=" << intrinsic[0][2] << ", cy=" << intrinsic[1][2] << endl;
+
+		// Breite und Höhe des entzerrten Bilds ermitteln
+		unsigned int height = top_y + -(bottom_y);
+		unsigned int width = -(leftest_x) + rightest_x;
+		cout << "Breite=" << width << ", Hoehe=" << height << endl;
 
 #endif
 
@@ -132,12 +132,12 @@ int main(int argc, char* argv[])
 		// Bild entzerren
 		// (Aufgabe 4)
 		//
-#if 0
+#if 1
 		// Entzerrtes "RGB_Pixel"-Bild "img" definieren
 		Img<RGB_Pixel> img;
 
 		// Entzerrung durchführen: "img" aus "img_d" berechnen
-		UndistoreImage( &img, intrinsic , &img_d , intrinsic_d , distCoeffs , rotVect );
+		UndistoreImage( img, intrinsic , img_d , intrinsic_d , distCoeffs , rotVect );
 
 		// Entzerrtes Bild "img" wegspeichern
 		cout << "Schreibe Bild: " << ImageFile + "_entzerrt.bmp" << endl;
