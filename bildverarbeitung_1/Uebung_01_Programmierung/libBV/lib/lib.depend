@@ -1,0 +1,89 @@
+# depslib dependency file v1.0
+1428428159 source:c:\uni\bildverarbeitung\bildverarbeitung_1\uebung_01_programmierung\libbv\lib\aviread.cxx
+	"AviRead.h"
+	"string.h"
+
+1428428159 c:\uni\bildverarbeitung\bildverarbeitung_1\uebung_01_programmierung\libbv\include\aviread.h
+	"FileIO.h"
+	"xa_avi.h"
+	"Img.h"
+	"RGB_Pixel.h"
+
+1428428159 c:\uni\bildverarbeitung\bildverarbeitung_1\uebung_01_programmierung\libbv\include\fileio.h
+	<stdio.h>
+
+1428428159 c:\uni\bildverarbeitung\bildverarbeitung_1\uebung_01_programmierung\libbv\include\xa_avi.h
+
+1428428159 c:\uni\bildverarbeitung\bildverarbeitung_1\uebung_01_programmierung\libbv\include\img.h
+	"Position.h"
+
+1428428159 c:\uni\bildverarbeitung\bildverarbeitung_1\uebung_01_programmierung\libbv\include\position.h
+
+1428428159 c:\uni\bildverarbeitung\bildverarbeitung_1\uebung_01_programmierung\libbv\include\rgb_pixel.h
+
+1428428159 source:c:\uni\bildverarbeitung\bildverarbeitung_1\uebung_01_programmierung\libbv\lib\aviwrite.cxx
+	"AviWrite.h"
+	"xa_avi.h"
+
+1428428159 c:\uni\bildverarbeitung\bildverarbeitung_1\uebung_01_programmierung\libbv\include\aviwrite.h
+	"FileIO.h"
+	"Img.h"
+	"RGB_Pixel.h"
+
+1428428159 source:c:\uni\bildverarbeitung\bildverarbeitung_1\uebung_01_programmierung\libbv\lib\bmpread.cxx
+	"BmpRead.h"
+	"RGB_Pixel.h"
+	<stdio.h>
+
+1428428159 c:\uni\bildverarbeitung\bildverarbeitung_1\uebung_01_programmierung\libbv\include\bmpread.h
+	"FileIO.h"
+	"Img.h"
+	"RGB_Pixel.h"
+
+1428428159 source:c:\uni\bildverarbeitung\bildverarbeitung_1\uebung_01_programmierung\libbv\lib\bmpwrite.cxx
+	"BmpWrite.h"
+	"RGB_Pixel.h"
+
+1428428159 c:\uni\bildverarbeitung\bildverarbeitung_1\uebung_01_programmierung\libbv\include\bmpwrite.h
+	<stdio.h>
+	"FileIO.h"
+	"Img.h"
+	"RGB_Pixel.h"
+	<vector>
+
+1428428159 source:c:\uni\bildverarbeitung\bildverarbeitung_1\uebung_01_programmierung\libbv\lib\convimg.cxx
+	<utility>
+	<cmath>
+	<Img.h>
+	<ConvImg.h>
+
+1428428159 c:\uni\bildverarbeitung\bildverarbeitung_1\uebung_01_programmierung\libbv\include\convimg.h
+	<utility>
+	<Img.h>
+	<RGB_Pixel.h>
+
+1428428159 source:c:\uni\bildverarbeitung\bildverarbeitung_1\uebung_01_programmierung\libbv\lib\fft.cxx
+	"FFT.h"
+
+1428428159 c:\uni\bildverarbeitung\bildverarbeitung_1\uebung_01_programmierung\libbv\include\fft.h
+	"Img.h"
+	<complex>
+	<vector>
+
+1428428159 source:c:\uni\bildverarbeitung\bildverarbeitung_1\uebung_01_programmierung\libbv\lib\fileio.cxx
+	"FileIo.h"
+
+1428428159 source:c:\uni\bildverarbeitung\bildverarbeitung_1\uebung_01_programmierung\libbv\lib\grafik.cxx
+	"Grafik.h"
+	<iostream>
+	"simplefont.h"
+
+1428428159 c:\uni\bildverarbeitung\bildverarbeitung_1\uebung_01_programmierung\libbv\include\grafik.h
+	"RGB_Pixel.h"
+	"Img.h"
+
+1428428159 c:\uni\bildverarbeitung\bildverarbeitung_1\uebung_01_programmierung\libbv\include\simplefont.h
+
+1428428159 source:c:\uni\bildverarbeitung\bildverarbeitung_1\uebung_01_programmierung\libbv\lib\simplefont.cxx
+	"SimpleFont.h"
+

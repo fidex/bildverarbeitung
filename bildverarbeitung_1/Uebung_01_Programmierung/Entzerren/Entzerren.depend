@@ -1,0 +1,52 @@
+# depslib dependency file v1.0
+1428449324 source:c:\uni\bildverarbeitung\bildverarbeitung_1\uebung_01_programmierung\entzerren\entzerren.cxx
+	<cmath>
+	<algorithm>
+	"RGB_Pixel.h"
+	"Img.h"
+	"Entzerren.h"
+
+1428428159 c:\uni\bildverarbeitung\bildverarbeitung_1\uebung_01_programmierung\libbv\include\rgb_pixel.h
+
+1428428159 c:\uni\bildverarbeitung\bildverarbeitung_1\uebung_01_programmierung\libbv\include\img.h
+	"Position.h"
+
+1428428159 c:\uni\bildverarbeitung\bildverarbeitung_1\uebung_01_programmierung\libbv\include\position.h
+
+1428449644 c:\uni\bildverarbeitung\bildverarbeitung_1\uebung_01_programmierung\entzerren\entzerren.h
+	<vector>
+	"RGB_Pixel.h"
+	"Img.h"
+
+1428428159 source:c:\uni\bildverarbeitung\bildverarbeitung_1\uebung_01_programmierung\entzerren\kameraparameter_einlesen.cpp
+	<iostream>
+	<fstream>
+	<stdlib.h>
+
+1428455269 source:c:\uni\bildverarbeitung\bildverarbeitung_1\uebung_01_programmierung\entzerren\main.cpp
+	<iostream>
+	<fstream>
+	<vector>
+	"Img.h"
+	"BmpRead.h"
+	"BmpWrite.h"
+	"Entzerren.h"
+	"Kameraparameter_einlesen.h"
+
+1428428159 c:\uni\bildverarbeitung\bildverarbeitung_1\uebung_01_programmierung\libbv\include\bmpread.h
+	"FileIO.h"
+	"Img.h"
+	"RGB_Pixel.h"
+
+1428428159 c:\uni\bildverarbeitung\bildverarbeitung_1\uebung_01_programmierung\libbv\include\fileio.h
+	<stdio.h>
+
+1428428159 c:\uni\bildverarbeitung\bildverarbeitung_1\uebung_01_programmierung\libbv\include\bmpwrite.h
+	<stdio.h>
+	"FileIO.h"
+	"Img.h"
+	"RGB_Pixel.h"
+	<vector>
+
+1428428159 c:\uni\bildverarbeitung\bildverarbeitung_1\uebung_01_programmierung\entzerren\kameraparameter_einlesen.h
+
