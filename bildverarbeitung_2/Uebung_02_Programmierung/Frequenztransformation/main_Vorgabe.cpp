@@ -114,6 +114,21 @@ int main(int argc, char*argv[]) {
   // Ergebnis:   z_fft_img  - Zeilentransformiertes Bild
   //             z_fft_mag  - Betrag des Zeilentransformierten Bilds
   // ==== Ihr Code ==== //
+  complex<double> tmp;
+    for (int y=0;y<src.Height();y++) {
+        for (int x=0;x<src.Width();x++) {
+            tmp.real(src[y][x]);
+            tmp.imag(0.0);
+            ori_zeile.push_back(tmp);
+        }
+        fft_zeile = FFT(ori_zeile);
+        for (int x=0;x<src.Width();x++) {
+            z_fft_img[y][x] = fft_zeile[x];
+            z_fft_mag[y][x] = abs(fft_zeile[x]);
+        }
+        ori_zeile.clear();
+        fft_zeile.clear();
+    }
 
   // Betragsbild ausgeben
   { pair<double,double> min_Max = get_min_Max<double>(z_fft_mag);
