@@ -123,12 +123,13 @@ int main(int argc, char*argv[]) {
         }
         fft_zeile = FFT(ori_zeile);
         for (int x=0;x<src.Width();x++) {
+            //cout << "Im:" << fft_zeile[x] << endl;
             z_fft_img[y][x] = fft_zeile[x];
             z_fft_mag[y][x] = abs(fft_zeile[x]);
         }
         ori_zeile.clear();
         fft_zeile.clear();
-    }
+    }//cout << "Im:" << fft_zeile[x] << endl;
 
   // Betragsbild ausgeben
   { pair<double,double> min_Max = get_min_Max<double>(z_fft_mag);
@@ -147,20 +148,38 @@ int main(int argc, char*argv[]) {
   // Parameter: z_fft_mag     - Zeilentransformiertes Betragsbild
   // Ergebnis:  SpektrenSumme - Summe der Spektren aller Zeilen
   // ==== Ihr Code ==== //
-
+  double tmp2 = 0;
+    for(unsigned int y=0;y<height;y++){
+        for(unsigned int x=0;x<width;x++){
+            tmp2 += z_fft_mag[y][x];
+        }
+        SpektrenSumme[y] = tmp2;
+        tmp2=0;
+    }
   // Spektrensumme in .csv-Datei schreiben
   for (unsigned int x=0; x<width; x++) {
+    //cout << "Writing " << SpektrenSumme[x] << endl;
     spsum << SpektrenSumme[x] << endl;
   }
 
   // Suche Maximum
   const unsigned int k(5);  // Mindestanzahl von Perioden in einer Bildzeile
+  const unsigned int n(SpektrenSumme.size());
   unsigned int f_max(0);    // Position des Maximums
   // -------------------------------------------------------------------------------
   // Parameter: SpektrenSumme - Summe der Spektren aller Zeilen
   // Ergebnis:  f_max         - Position der gefundenen Grundfrequenz im Spektrum
   // ==== Ihr Code ==== //
-
+    double tmp3 = 0;
+    double tmp_max = 0;
+    for(unsigned int i=k;i<=n/4;i++){
+        tmp3 = SpektrenSumme[i] + SpektrenSumme[n- i] + SpektrenSumme[2*i]+SpektrenSumme[n-(2*i)];
+        if(tmp3 > tmp_max){
+            //cout << "ntmp_max " << tmp3 << endl;
+            tmp_max = tmp3;
+            f_max = i;
+        }
+    }
   cout << "Grundfrequenz: " << f_max << " Perioden. Dies entspricht " << double(width)/double(f_max) << " Pixel pro Periode." << endl;
 
   // ----------------------------------------------------------------------------------------------------------
@@ -173,7 +192,28 @@ int main(int argc, char*argv[]) {
   // Parameter:  z_fft_img - Zeilentransformiertes Bild
   // Ergebnis:   ifft_src  - Rücktransformiertes Bild aus Gleichanteil und Grundfrequenz
   // ==== Ihr Code ==== //
+    vector<complex<double> > vtmp(width);
+    vector<complex<double> > vtmp2(width);
+    double d;
 
+    for(unsigned int y=0; y<height; y++)
+    {
+        vtmp[0]=z_fft_img[y][0];
+        vtmp[f_max]=z_fft_img[y][f_max];
+        vtmp[n-f_max]=z_fft_img[y][n-f_max];
+        vtmp2=iFFT(vtmp);
+        for(unsigned int x=0; x<width; x++)
+        {
+            d = vtmp2[x].real();
+            if(d < 0.0){
+                d = 0.0;
+            }
+            else if(d > 1.0){
+                d = 1.0;
+            }
+            ifft_src[y][x] = d*255;
+        }
+    }
   BmpWrite((Bildname+"_ifft_src.bmp").c_str(),ifft_src);
 
   // ----------------------------------------------------------------------------------------------------------
@@ -186,6 +226,21 @@ int main(int argc, char*argv[]) {
   // Parameter:  z_fft_img - Zeilentransformiertes Bild
   // Ergebnis:   fft_img   - Fouriertransformiertes Bild in Zeilen und Spalten
   // ==== Ihr Code ==== //
+
+    vector<complex<double> > ori_spalte(height);     // Hilfsvektor fuer eine originale Bildspalte
+    vector<complex<double> > fft_spalte(height);     // Hilfsvektor fuer eine FFT-transformierte Bildspalte
+
+    for(unsigned int x = 0; x < z_fft_img.Width(); x++){
+        for(unsigned int y = 0; y < z_fft_img.Height(); y++){
+            ori_spalte.push_back(z_fft_img[y][x]);
+        }
+        fft_spalte = FFT(ori_spalte);
+        for(int y = 0; y < z_fft_img.Height(); y++){
+            fft_img[y][x] = fft_spalte[y];
+            fft_mag[y][x] = abs(fft_spalte[y]);
+        }
+        ori_spalte.clear();
+    }
 
   // Betragsbild auf 256 Graustufen skalieren und ausgeben
   pair<double,double> min_Max;
@@ -250,7 +305,23 @@ int main(int argc, char*argv[]) {
       // Hilfsbild:  fft_img_inc - Fouriertransformiertes Bild mit einem Teil der Koeffizienten
       // Ergebnis:   src_img_i   - Rücktransformiertes Bild eines Teils der Koeffizienten
       // ==== Ihr Code ==== //
+        for (unsigned int y=(height/2-f)+1; y<=height/2+f-1; y++)
+        {
+            for (unsigned int x=(width/2-f)+1; x<=width/2+f-1; x++)
+            {
+                fft_img_inc[y][x] = fft_img[y][x];
+            }
+        }
 
+        src_img_i = iFFT_2D(fft_img_inc);
+
+        for (unsigned int y=0; y<height; y++)
+        {
+            for (unsigned int x=0; x<width; x++)
+            {
+                rgb_src_img_i[y][x] = RGB_Pixel(src_img_i[y][x].real()*255, src_img_i[y][x].real()*255, src_img_i[y][x].real()*255);
+            }
+        }
       // complex-Bild src_img_i im Originalraum in Grauwertbild in RGB-Darstellung konvertieren
       for (unsigned int y=0; y<height; y++) {
         for (unsigned int x=0; x<width; x++) {
