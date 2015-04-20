@@ -20,11 +20,24 @@ Img<pair<double,double> > compute_Sobel_xy(const Img<double> src) {
     const unsigned int height(src.Height());
     const unsigned int width(src.Width());
     Img<pair<double,double> > sobel_xy_img(width,height);
-    // ...
-    // ... Berechnung durchfuehren
-    // ...
+
+    for(unsigned int x=0; x < src.Width(); x++){
+        for(unsigned int y=0; y < src.Height(); y++){
+            sobel_xy_img[y][x].first = (src[y][x+1] - src[y][x-1])/2.0;
+            sobel_xy_img[y][x].second = (src[y+1][x] - src[y-1][x])/2.0;
+
+            /*
+            if(sobel_xy_img[y][x].first != 0 || sobel_xy_img[y][x].second != 0){
+                cout << "x: " << sobel_xy_img[y][x].first << ", y: " << sobel_xy_img[y][x].second << endl;
+            }
+            */
+
+        }
+    }
+
     return sobel_xy_img;
 }
+
 
 // --------------------------------------------------------------------
 // Aufgabe 2: Gradient in Polarkoordinatendarstellung konvertieren
@@ -32,10 +45,41 @@ Img<pair<double,double> > compute_Sobel_xy(const Img<double> src) {
 // ------------------------------------------------------------------------------------------------
 // Gradient aus xy-Darstellung in Polardarstellung umrechnen
 // ------------------------------------------------------------------------------------------------
+
 Img<pair<double,double> > convert_Gradient_to_Polar(Img<pair<double,double> > Gradient_xy) {
     const unsigned int height(Gradient_xy.Height());
     const unsigned int width(Gradient_xy.Width());
+    cout << "height: " << height << ", width: " << width << endl;
     Img<pair<double,double> > Gradient_mp(width,height);
+
+    for(unsigned int x=0; x < width; x++){
+        for(unsigned int y=0; y < height; y++){
+            double x_value = Gradient_xy[y][x].first;
+            double y_value = Gradient_xy[y][x].second;
+
+            double r = sqrt(pow(x_value, 2) + pow(y_value, 2));
+            double angle  = atan2 (y_value, x_value);
+
+            /*
+            double angle;
+
+            if(r == 0){
+                angle = 0;
+            }
+            else if(y_value >= 0){
+                angle = acos(x_value/r);
+            }
+            else{
+                angle = 2 * M_PI - acos(x_value/r);
+            }
+            */
+
+            Gradient_mp[y][x].first = r;
+            Gradient_mp[y][x].second = angle;
+        }
+    }
+
+
     // ...
     // ... Berechnung durchfuehren
     // ...
@@ -52,9 +96,20 @@ Img<pair<double,double> > convert_Gradient_to_Polar(Img<pair<double,double> > Gr
 vector<double> create_AngleHistogram(Img<pair<double,double> > Gradient_mp, unsigned int segments) {
     // Summe der Gradientenbetraege ueber Winkelsegmenten berechnen
     vector<double> Hist(segments);
-    // ...
-    // ... Berechnung durchfuehren
-    // ...
+    //Elemente sind null
+    const unsigned int height(Gradient_mp.Height());
+    const unsigned int width(Gradient_mp.Width());
+    int seg;
+    int phi;
+    for(int y=0; y < height; y++){
+        for(int x=0; x < width; x++){
+            phi = Gradient_mp[y][x].second;
+            seg = (int) floor((phi/(2*M_PI))*256)%256;
+            Hist[seg] = Hist[seg] + Gradient_mp[y][x].first;
+        }
+    }
+
+
     return Hist;
 }
 
