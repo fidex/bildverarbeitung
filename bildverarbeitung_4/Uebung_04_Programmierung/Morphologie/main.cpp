@@ -74,7 +74,26 @@ vector<pair<int,int> > mirror_SE (const vector<pair<int,int> > ImageWindow) {
 template<typename Pixel>
 Img<Pixel> erode(const Img<Pixel> &src, const vector<pair<int,int> > &ImageWindow) {
   Img<Pixel> eroded(src.Width(),src.Height());
-  cout << "Aufgabe 2: 'erode' noch nicht kodiert" << endl;
+  int threshold = calculateThreshold(src);
+  bool toErode = true;
+  for(int y=0;y<src.Height();y++){
+    for(int x=0;x<src.Width();x++){
+        for(int i=0;i<ImageWindow.size();i++){
+                int window_x = x + ImageWindow[i].first;
+                int window_y = y + ImageWindow[i].second;
+                if(src[window_x][window_y] < threshold){
+                    toErode = false;
+                }
+        }
+        if(toErode){
+            eroded[x][y] = 255;
+        }else{
+            eroded[x][y] = src[x][y];
+            toErode = true;
+        }
+    }
+  }
+  //cout << "Aufgabe 2: 'erode' noch nicht kodiert" << endl;
   return eroded;
 }
 
@@ -99,7 +118,7 @@ Img<Pixel> opening(const Img<Pixel> &src, const vector<pair<int,int> > &ImageWin
   cout << "Aufgabe 4: 'opening' noch nicht kodiert" << endl;
 
   Img<Pixel> erodedImg = erode(src, ImageWindow);
-  Img<Pixel> mirroredImg = mirror_SE(erodedImg);
+  vector<pair<int,int> > mirroredImg = mirror_SE(ImageWindow);
   Img<Pixel> dilatedImg = dilate(src, mirroredImg);
 
   opened = dilatedImg;
@@ -117,7 +136,7 @@ Img<Pixel> closing(const Img<Pixel> &src, const vector<pair<int,int> > &ImageWin
   cout << "Aufgabe 4: 'closing' noch nicht kodiert" << endl;
 
   Img<Pixel> dilatedImg = dilate(src, ImageWindow);
-  Img<Pixel> mirroredImg = mirror_SE(dilatedImg);
+  vector<pair<int,int> > mirroredImg = mirror_SE(ImageWindow);
   Img<Pixel> erodedImg = erode(src, mirroredImg);
 
   closed = erodedImg;
@@ -286,11 +305,11 @@ int main(int argc, char*argv[]) {
   BmpWrite((Bildname+"_binaer.bmp").c_str(),erstes_Binaerbild);
   cout << "." << flush;
 
-/*
+
   // --------------------------------------------------------------------------------
   // 2. Aufgabe: Erosion und Dilation mit quadratischen SE
   // --------------------------------------------------------------------------------
-  const unsigned int SE_Groesse = ???; // geeigneten Wert einfuegen
+  const unsigned int SE_Groesse = 5; // geeigneten Wert einfuegen
   {
     // Quadratisches Bildfenster aufbauen
     vector<pair<int,int> > quadratisches_Bildfenster;
@@ -370,7 +389,7 @@ int main(int argc, char*argv[]) {
   cout << "." << flush;
 
   cout << endl;
-  */
+
   return 0;
 
 
