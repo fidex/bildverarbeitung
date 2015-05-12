@@ -24,6 +24,8 @@ using namespace std;
 #define BILDQUELLE BILD_von_DATEI
 //#define BILDQUELLE BILD_von_KAMERA
 
+int calculateThreshold(const Img<unsigned char> &img);
+
 // ---------------------------------------------------------------------------
 // Vektor mit relativen Positionen der Pixel eines quadratischen SEs fuellen
 // ---------------------------------------------------------------------------
@@ -123,7 +125,83 @@ Img<bool> optimal_threshold(const Img<unsigned char> &gray_image) {
   const unsigned int Hoehe  = gray_image.Height();
   Img<bool> binary_image(Breite,Hoehe);
   cout << "Aufgabe 1: 'optimal_threshold' noch nicht kodiert" << endl;
+
+    int threshold = calculateThreshold(gray_image);
+
+    unsigned char maxValue = 0;
+    for(int x = 0; x < Breite; x++){
+        for(int y = 0; y < Hoehe; y++){
+                if(gray_image[y][x] > maxValue){
+                    maxValue = gray_image[y][x];
+                }
+        }
+    }
+    cout << "maxValue: " << (unsigned int) maxValue << endl;
+    //threshold = maxValue / 2;
+
+    for(int x = 0; x < Breite; x++){
+        for(int y = 0; y < Hoehe; y++){
+            const unsigned char &p = gray_image[y][x];
+            binary_image[y][x] = (p > threshold);
+        }
+    }
+
   return binary_image;
+}
+
+int calculateThreshold(const Img<unsigned char> &img){
+    // Calculate histogram
+    long histogram[256];
+
+    for(int i = 0; i < 256; i++){
+        histogram[i]=0L;
+    }
+
+    for(int x = 0; x < img.Width(); x++){
+        for(int y =0; y < img.Height(); y++){
+            histogram[img[y][x]]++;
+        }
+    }
+
+    // Calculate sums
+    double S1[256];
+    double S2[256];
+
+    S1[0] = histogram[0];
+    S2[0] = 0;
+
+    for(int i = 1; i < 256; i++){
+        S1[i] = S1[i-1] + histogram[i];
+        S2[i] = S2[i-1] + i * histogram[i];
+    }
+
+    // Calculate quality criterion
+    double pixels = img.Width() * img.Height();
+    double average = S2[256-1]/pixels;
+    double j[256];
+    double maximum = 0.0;
+    int threshold = 0;
+
+    cout << "pixels: " << pixels << endl;
+    cout << "average: " << average << endl;
+
+    for(int i = 0; i < 256; i++){
+        if((0 == S1[i]) || (S1[i] == pixels)){
+            j[i] = 0;
+        }
+        else{
+            double t = (S2[i] - S1[i] * average);
+            j[i] = (t*t)/(S1[i] * (pixels - S1[i]));
+        }
+
+        if(j[i] > maximum){
+            maximum = j[i];
+            threshold = i;
+            cout << "treshold changed: " << threshold << endl;
+        }
+    }
+    cout << "threshold: " << threshold << endl;
+    return threshold;
 }
 
 // ------------------------------------------------------------------------------------------------
@@ -181,6 +259,7 @@ int main(int argc, char*argv[]) {
   BmpWrite((Bildname+"_binaer.bmp").c_str(),erstes_Binaerbild);
   cout << "." << flush;
 
+/*
   // --------------------------------------------------------------------------------
   // 2. Aufgabe: Erosion und Dilation mit quadratischen SE
   // --------------------------------------------------------------------------------
@@ -264,5 +343,8 @@ int main(int argc, char*argv[]) {
   cout << "." << flush;
 
   cout << endl;
+  */
   return 0;
+
+
 }

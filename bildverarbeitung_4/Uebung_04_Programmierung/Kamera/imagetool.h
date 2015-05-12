@@ -5,6 +5,8 @@
 #define IMAGETOOL_IPTLIB
 //#define IMAGETOOL_WXWIDGETS
 
+#define uint8_t unsigned char
+
 class wxImage;
 class RGB_Pixel;
 template <class RGB_Pixel> class Image;

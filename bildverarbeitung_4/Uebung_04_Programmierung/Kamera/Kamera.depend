@@ -1,0 +1,39 @@
+# depslib dependency file v1.0
+1428400178 source:d:\studium\bildverarbeitung\git\bildverarbeitung\bildverarbeitung_4\uebung_04_programmierung\kamera\camera.cpp
+	<iostream>
+	<conio.h>
+	<camera.h>
+	<SocketWrite.h>
+	<SocketRead.h>
+	<RGB_Pixel.h>
+	<Img.h>
+
+1428400178 d:\studium\bildverarbeitung\git\bildverarbeitung\bildverarbeitung_4\uebung_04_programmierung\kamera\camera.h
+
+1428400178 d:\studium\bildverarbeitung\git\bildverarbeitung\bildverarbeitung_4\uebung_04_programmierung\kamera\socketwrite.h
+	<stdint.h>
+	<winsock2.h>
+	<RGB_Pixel.h>
+
+1428400178 d:\studium\bildverarbeitung\git\bildverarbeitung\bildverarbeitung_4\uebung_04_programmierung\include\rgb_pixel.h
+
+1428400178 d:\studium\bildverarbeitung\git\bildverarbeitung\bildverarbeitung_4\uebung_04_programmierung\kamera\socketread.h
+	<winsock2.h>
+	<Img.h>
+	<RGB_Pixel.h>
+
+1428400178 d:\studium\bildverarbeitung\git\bildverarbeitung\bildverarbeitung_4\uebung_04_programmierung\include\img.h
+	"Position.h"
+
+1428400178 d:\studium\bildverarbeitung\git\bildverarbeitung\bildverarbeitung_4\uebung_04_programmierung\include\position.h
+
+1428400178 source:d:\studium\bildverarbeitung\git\bildverarbeitung\bildverarbeitung_4\uebung_04_programmierung\kamera\iepsocket.cpp
+	"IEPSocket.h"
+
+1428400178 d:\studium\bildverarbeitung\git\bildverarbeitung\bildverarbeitung_4\uebung_04_programmierung\kamera\iepsocket.h
+	<stdint.h>
+	<winsock2.h>
+	"iep.h"
+
+1428400178 d:\studium\bildverarbeitung\git\bildverarbeitung\bildverarbeitung_4\uebung_04_programmierung\kamera\iep.h
+
