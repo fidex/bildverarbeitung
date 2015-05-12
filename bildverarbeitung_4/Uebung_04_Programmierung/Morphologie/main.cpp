@@ -57,6 +57,13 @@ vector<pair<int,int> > create_round_SE(const unsigned int Diameter) {
 vector<pair<int,int> > mirror_SE (const vector<pair<int,int> > ImageWindow) {
   vector<pair<int,int> > MirroredImageWindow;
   cout << "Aufgabe 4: 'mirror_SE' noch nicht kodiert" << endl;
+
+  if(ImageWindow.size() > 0){
+    for(int i = ImageWindow.size() - 1; i >= 0; i--){
+        MirroredImageWindow.push_back(ImageWindow[i]);
+    }
+  }
+
   return MirroredImageWindow;
 }
 
@@ -90,6 +97,13 @@ template<typename Pixel>
 Img<Pixel> opening(const Img<Pixel> &src, const vector<pair<int,int> > &ImageWindow) {
   Img<Pixel> opened;
   cout << "Aufgabe 4: 'opening' noch nicht kodiert" << endl;
+
+  Img<Pixel> erodedImg = erode(src, ImageWindow);
+  Img<Pixel> mirroredImg = mirror_SE(erodedImg);
+  Img<Pixel> dilatedImg = dilate(src, mirroredImg);
+
+  opened = dilatedImg;
+
   return opened;
 }
 
@@ -101,6 +115,13 @@ template<typename Pixel>
 Img<Pixel> closing(const Img<Pixel> &src, const vector<pair<int,int> > &ImageWindow) {
   Img<Pixel> closed;
   cout << "Aufgabe 4: 'closing' noch nicht kodiert" << endl;
+
+  Img<Pixel> dilatedImg = dilate(src, ImageWindow);
+  Img<Pixel> mirroredImg = mirror_SE(dilatedImg);
+  Img<Pixel> erodedImg = erode(src, mirroredImg);
+
+  closed = erodedImg;
+
   return closed;
 }
 
@@ -112,6 +133,12 @@ template<typename Pixel>
 Img<Pixel> operator-(const Img<Pixel> &l, const Img<Pixel> &r) {
   Img<Pixel> d(l.Width(),l.Height());
   cout << "Aufgabe 5: 'operator -' noch nicht kodiert" << endl;
+
+  for(int x = 0; x < l.Width(); x++){
+    for(int y = 0; y < l.Height(); y++){
+        d[y][x] = l[y][x] - r[y][x];
+    }
+  }
   return d;
 }
 
