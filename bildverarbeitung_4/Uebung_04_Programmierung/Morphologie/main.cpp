@@ -74,10 +74,10 @@ vector<pair<int,int> > mirror_SE (const vector<pair<int,int> > ImageWindow) {
 template<typename Pixel>
 Img<Pixel> erode(const Img<Pixel> &src, const vector<pair<int,int> > &ImageWindow) {
   Img<Pixel> eroded(src.Width(),src.Height());
-  int threshold = calculateThreshold(src);
+  int threshold = 30; //calculateThreshold(src);
   bool toErode = true;
-  for(int y=0;y<src.Height();y++){
-    for(int x=0;x<src.Width();x++){
+  for(int y=0;y<src.Width();y++){
+    for(int x=0;x<src.Height();x++){
         for(int i=0;i<ImageWindow.size();i++){
                 int window_x = x + ImageWindow[i].first;
                 int window_y = y + ImageWindow[i].second;
@@ -86,9 +86,10 @@ Img<Pixel> erode(const Img<Pixel> &src, const vector<pair<int,int> > &ImageWindo
                 }
         }
         if(toErode){
-            eroded[x][y] = 255;
-        }else{
             eroded[x][y] = src[x][y];
+        }else{
+
+            eroded[x][y] = 0;
             toErode = true;
         }
     }
@@ -104,7 +105,26 @@ Img<Pixel> erode(const Img<Pixel> &src, const vector<pair<int,int> > &ImageWindo
 template<typename Pixel>
 Img<Pixel> dilate(const Img<Pixel> &src, const vector<pair<int,int> > &ImageWindow) {
   Img<Pixel> dilated(src.Width(),src.Height());
-  cout << "Aufgabe 2: 'dilate' noch nicht kodiert" << endl;
+int threshold = 30;//calculateThreshold(src);
+  bool toDilate = true;
+  for(int y=0;y<src.Width();y++){
+    for(int x=0;x<src.Height();x++){
+        for(int i=0;i<ImageWindow.size();i++){
+                int window_x = x + ImageWindow[i].first;
+                int window_y = y + ImageWindow[i].second;
+                if(src[window_x][window_y] < threshold){
+                    toDilate = false;
+                }
+        }
+        if(toDilate){
+            dilated[x][y] = src[x][y];
+        }else{
+            dilated[x][y] = 255;
+            toDilate = true;
+        }
+    }
+  }
+  //cout << "Aufgabe 2: 'dilate' noch nicht kodiert" << endl;
   return dilated;
 }
 
@@ -117,8 +137,8 @@ Img<Pixel> opening(const Img<Pixel> &src, const vector<pair<int,int> > &ImageWin
   Img<Pixel> opened;
   cout << "Aufgabe 4: 'opening' noch nicht kodiert" << endl;
 
-  Img<Pixel> erodedImg = erode(src, ImageWindow);
   vector<pair<int,int> > mirroredImg = mirror_SE(ImageWindow);
+  Img<Pixel> erodedImg = erode(src, ImageWindow);
   Img<Pixel> dilatedImg = dilate(src, mirroredImg);
 
   opened = dilatedImg;
@@ -135,8 +155,8 @@ Img<Pixel> closing(const Img<Pixel> &src, const vector<pair<int,int> > &ImageWin
   Img<Pixel> closed;
   cout << "Aufgabe 4: 'closing' noch nicht kodiert" << endl;
 
+vector<pair<int,int> > mirroredImg = mirror_SE(ImageWindow);
   Img<Pixel> dilatedImg = dilate(src, ImageWindow);
-  vector<pair<int,int> > mirroredImg = mirror_SE(ImageWindow);
   Img<Pixel> erodedImg = erode(src, mirroredImg);
 
   closed = erodedImg;
@@ -309,7 +329,7 @@ int main(int argc, char*argv[]) {
   // --------------------------------------------------------------------------------
   // 2. Aufgabe: Erosion und Dilation mit quadratischen SE
   // --------------------------------------------------------------------------------
-  const unsigned int SE_Groesse = 5; // geeigneten Wert einfuegen
+  const unsigned int SE_Groesse = 3; // geeigneten Wert einfuegen
   {
     // Quadratisches Bildfenster aufbauen
     vector<pair<int,int> > quadratisches_Bildfenster;
