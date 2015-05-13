@@ -137,9 +137,9 @@ Img<Pixel> opening(const Img<Pixel> &src, const vector<pair<int,int> > &ImageWin
   Img<Pixel> opened;
   cout << "Aufgabe 4: 'opening' noch nicht kodiert" << endl;
 
-  vector<pair<int,int> > mirroredImg = mirror_SE(ImageWindow);
-  Img<Pixel> erodedImg = erode(src, ImageWindow);
-  Img<Pixel> dilatedImg = dilate(src, mirroredImg);
+  vector<pair<int,int> > mirroredImgWindow = mirror_SE(ImageWindow);
+  Img<Pixel> erodedImg = erode(src, mirroredImgWindow);
+  Img<Pixel> dilatedImg = dilate(erodedImg, mirroredImgWindow);
 
   opened = dilatedImg;
 
@@ -155,14 +155,16 @@ Img<Pixel> closing(const Img<Pixel> &src, const vector<pair<int,int> > &ImageWin
   Img<Pixel> closed;
   cout << "Aufgabe 4: 'closing' noch nicht kodiert" << endl;
 
-vector<pair<int,int> > mirroredImg = mirror_SE(ImageWindow);
-  Img<Pixel> dilatedImg = dilate(src, ImageWindow);
-  Img<Pixel> erodedImg = erode(src, mirroredImg);
+  vector<pair<int,int> > mirroredImgWindow = mirror_SE(ImageWindow);
+  Img<Pixel> dilatedImg = dilate(src, mirroredImgWindow);
+  Img<Pixel> erodedImg = erode(dilatedImg, mirroredImgWindow);
 
   closed = erodedImg;
 
   return closed;
-}
+
+    }
+
 
 // ---------------------------------------------------------------------------
 // Aufgabe 5: Code erstellen
