@@ -109,7 +109,6 @@ vector<double> create_AngleHistogram(Img<pair<double,double> > Gradient_mp, unsi
         }
     }
 
-
     return Hist;
 }
 
@@ -123,9 +122,75 @@ Img<pair<double,double> > create_NMS_Gradient(Img<pair<double,double> > Gradient
     const unsigned int height(Gradient_mp.Height());
     const unsigned int width(Gradient_mp.Width());
     Img<pair<double,double> > Gradient_nms(width,height);
-    // ...
-    // ... Berechnung durchfuehren
-    // ...
+    int phi;
+    int seg;
+    double r;
+    for(int y=0; y < height; y++){
+        for(int x=0; x < width; x++){
+            r = Gradient_mp[y][x].first;
+            phi = Gradient_mp[y][x].second;
+            seg = abs((int) floor((phi/(2*M_PI))*8)%8);
+            switch(seg){
+            case 0:
+            case 4: {
+                if(r > Gradient_mp[y+1][x-1].first
+                    && r > Gradient_mp[y][x-1].first
+                    && r > Gradient_mp[y][x+1].first
+                    && r > Gradient_mp[y-1][x+1].first){
+
+                    Gradient_nms[y][x] = Gradient_mp[y][x];
+
+                }else{
+                    Gradient_nms[y][x].first = 0;
+                    Gradient_nms[y][x].second = 0;
+                }
+                break;
+            }
+            case 2:
+            case 6:{
+                if(r > Gradient_mp[y-1][x-1].first
+                    && r > Gradient_mp[y-1][x].first
+                    && r > Gradient_mp[y+1][x].first
+                    && r > Gradient_mp[y+1][x+1].first){
+                    Gradient_nms[y][x] = Gradient_mp[y][x];
+                }else{
+                    Gradient_nms[y][x].first = 0;
+                    Gradient_nms[y][x].second = 0;
+                }
+                break;
+
+            }
+            case 1:
+            case 5:{
+                if(r > Gradient_mp[y-1][x].first
+                    && r > Gradient_mp[y-1][x+1].first
+                    && r > Gradient_mp[y+1][x].first
+                    && r > Gradient_mp[y+1][x-1].first){
+                    Gradient_nms[y][x] = Gradient_mp[y][x];
+                }else{
+                    Gradient_nms[y][x].first = 0;
+                    Gradient_nms[y][x].second = 0;
+                }
+                break;
+
+            }
+            case 3:
+            case 7:{
+                if(r > Gradient_mp[y-1][x-1].first
+                && r > Gradient_mp[y][x-1].first
+                && r > Gradient_mp[y][x+1].first
+                && r > Gradient_mp[y+1][x+1].first){
+                    Gradient_nms[y][x] = Gradient_mp[y][x];
+                }else{
+                    Gradient_nms[y][x].first = 0;
+                    Gradient_nms[y][x].second = 0;
+                }
+                break;
+
+            }
+            }
+        }
+    }
     return Gradient_nms;
 }
 
