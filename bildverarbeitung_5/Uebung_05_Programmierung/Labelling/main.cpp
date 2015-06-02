@@ -8,6 +8,7 @@
 #include <iostream>
 #include <cmath>
 #include <queue>
+#include <cstring>
 #include <string>
 #include <vector>
 #include <map>
@@ -32,6 +33,12 @@ using namespace std;
 // ------------------------------------------------------------------------------------------------
 #define BILDQUELLE BILD_von_DATEI
 //#define BILDQUELLE BILD_von_KAMERA
+
+void print_SE(vector<pair<int, int> > ImageWindow);
+int calculateThreshold(const Img<unsigned char> &img);
+
+
+int object_count = 0;
 
 
 // ------------------------------------------------------------------------------------------------
@@ -485,17 +492,16 @@ vector<unsigned int> count_MarginPixels(const Img<unsigned int>& label_image) {
   // - Diese Randpixel sind noch immer mit der Labelnummer gekennzeichent.
   // - Fuer das Objekt wird nachfolgend 8er-Konnektivitaet angenommen.
   Img<unsigned int> inner_gradient_label_image;
-  vector<unsigned int> Pixels;  // Vektor mit Anzahl-Zählern der einzelnen Objekte
+  vector<unsigned int> Pixels(object_count);  // Vektor mit Anzahl-Zählern der einzelnen Objekte
 
-    bild x = erode(labelbild,3x3SE);
-    interner_gradient = lablebild - x;
+    Img<unsigned int> eroded = erode(label_image, create_square_SE(3));
+    inner_gradient_label_image = label_image - eroded;
 
-    int array[256] histogramm;
-
-    for(each pixel in interner_gradient){
-    //if( pixle_wert > schwellwert)
-       histogramm[pixel_wert]++;
-
+    for(int y=0;y<height;y++){
+        for(int x=0;x<width;x++){
+    //if( pixle_wert > schwellwert)3x3SE
+            Pixels[inner_gradient_label_image[y][x]]++;
+        }
     }
 
   return Pixels;
@@ -638,6 +644,7 @@ int main(int argc, char*argv[]) {
     cerr << "Keine Objekte gefunden" << endl;
     return 2;
   }
+  object_count = Objektgroessen.size();
   cout << "Gefundene Objekte:" << Objektgroessen.size() << endl;
 
   // Labelbild mit verschiedenen Farben fuer die Objekte erzeugen und ausgeben
