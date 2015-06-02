@@ -485,24 +485,45 @@ Img<RGB_Pixel> Labelimage_to_RGB(const Img<unsigned int>& label_image, vector<RG
 // Anzahl der Randpixel pro Objekt berechnen
 // ------------------------------------------------------------------------------
 vector<unsigned int> count_MarginPixels(const Img<unsigned int>& label_image) {
-  const unsigned int height = label_image.Height();
+    const unsigned int height = label_image.Height();
   const unsigned int width  = label_image.Width();
   // Internes Gradientenbild aus dem Labelbild berechnen:
   // - Dieses Bild enthält nur die Randpixel der Objekte.
   // - Diese Randpixel sind noch immer mit der Labelnummer gekennzeichent.
   // - Fuer das Objekt wird nachfolgend 8er-Konnektivitaet angenommen.
   Img<unsigned int> inner_gradient_label_image;
-  vector<unsigned int> Pixels(object_count);  // Vektor mit Anzahl-Zählern der einzelnen Objekte
+  vector<unsigned int> Pixels;  // Vektor mit Anzahl-Zählern der einzelnen Objekte
 
-    Img<unsigned int> eroded = erode(label_image, create_square_SE(3));
-    inner_gradient_label_image = label_image - eroded;
+  vector<pair<int,int> > se = create_square_SE(3);
+  Img<unsigned int> erodedImg = erode<unsigned int>(label_image, se);
 
-    for(int y=0;y<height;y++){
-        for(int x=0;x<width;x++){
-    //if( pixle_wert > schwellwert)3x3SE
-            Pixels[inner_gradient_label_image[y][x]]++;
+  inner_gradient_label_image = label_image - erodedImg;
+
+    unsigned int objects = 0;
+
+    for(int x = 0; x < width; x++){
+        for(int y = 0; y < height; y++){
+            if(inner_gradient_label_image[y][x] > objects){
+                objects = inner_gradient_label_image[y][x];
+            }
         }
     }
+
+    for(int i = 0 ; i < objects; i++){
+        Pixels.push_back(0);
+    }
+
+  for(int x = 0; x < width; x++){
+    for(int y = 0; y < height; y++){
+        if(inner_gradient_label_image[y][x] > 0){
+            Pixels[inner_gradient_label_image[y][x]-1]++;
+        }
+    }
+  }
+
+  for(unsigned int i = 0; i < Pixels.size(); i++){
+    cout << Pixels[i] << endl;
+  }
 
   return Pixels;
 }
@@ -520,7 +541,14 @@ vector<double> compute_Compactness(const vector<unsigned int> &margin_pixels, co
   // Berechnung der Kompaktheiten
   vector<double> Compactness(number_of_objects);
 
-  cerr << "Funktion compute_Compactness in Aufgabe 3 erstellen" << endl;
+  for(unsigned int i = 0; i < number_of_objects; i++){
+    Compactness[i] = (margin_pixels[i] * margin_pixels[i]) / object_sizes[i];
+    cout << "object" << i << ": " << Compactness[i] << endl;
+  }
+
+
+
+  //cerr << "Funktion compute_Compactness in Aufgabe 3 erstellen" << endl;
 
   return Compactness;
 }
