@@ -38,7 +38,7 @@ using namespace std;
 // Aus Uebung 4 uebernehmen
 // Optimale Schwelle
 // ------------------------------------------------------------------------------------------------
-
+/*
 Img<bool> optimal_threshold(const Img<unsigned char> &gray_image) {
   const unsigned int Breite = gray_image.Width();
   const unsigned int Hoehe  = gray_image.Height();
@@ -46,24 +46,184 @@ Img<bool> optimal_threshold(const Img<unsigned char> &gray_image) {
   cerr << "Funktion optimal_threshold aus Uebung 4 uebernehmen" << endl;
   return binary_image;
 }
+*/
+
+Img<bool> optimal_threshold(const Img<unsigned char> &gray_image) {
+  const unsigned int Breite = gray_image.Width();
+  const unsigned int Hoehe  = gray_image.Height();
+  Img<bool> binary_image(Breite,Hoehe);
+
+    int threshold = calculateThreshold(gray_image);
+
+    unsigned char maxValue = 0;
+    for(int x = 0; x < Breite; x++){
+        for(int y = 0; y < Hoehe; y++){
+                if(gray_image[y][x] > maxValue){
+                    maxValue = gray_image[y][x];
+                }
+        }
+    }
+    cout << "maxValue: " << (unsigned int) maxValue << endl;
+    //threshold = maxValue / 2;
+
+    for(int x = 0; x < Breite; x++){
+        for(int y = 0; y < Hoehe; y++){
+            const unsigned char &p = gray_image[y][x];
+            binary_image[y][x] = (p > threshold);
+        }
+    }
+
+  return binary_image;
+}
+
+int calculateThreshold(const Img<unsigned char> &img){
+    // Calculate histogram
+    long histogram[256];
+
+    for(int i = 0; i < 256; i++){
+        histogram[i]=0L;
+    }
+
+    for(int x = 0; x < img.Width(); x++){
+        for(int y =0; y < img.Height(); y++){
+            histogram[img[y][x]]++;
+        }
+    }
+
+    // Calculate sums
+    double S1[256];
+    double S2[256];
+
+    S1[0] = histogram[0];
+    S2[0] = 0;
+
+    for(int i = 1; i < 256; i++){
+        S1[i] = S1[i-1] + histogram[i];
+        S2[i] = S2[i-1] + i * histogram[i];
+    }
+
+    // Calculate quality criterion
+    double pixels = img.Width() * img.Height();
+    double average = S2[256-1]/pixels;
+    double j[256];
+    double maximum = 0.0;
+    int threshold = 0;
+
+    cout << "pixels: " << pixels << endl;
+    cout << "average: " << average << endl;
+
+    for(int i = 0; i < 256; i++){
+        if((0 == S1[i]) || (S1[i] == pixels)){
+            j[i] = 0;
+        }
+        else{
+            double t = (S2[i] - S1[i] * average);
+            j[i] = (t*t)/(S1[i] * (pixels - S1[i]));
+        }
+
+        if(j[i] > maximum){
+            maximum = j[i];
+            threshold = i;
+            //cout << "treshold changed: " << threshold << endl;
+        }
+    }
+    cout << "threshold: " << threshold << endl;
+    return threshold;
+}
 
 // ---------------------------------------------------------------------------
 // Aus Uebung 4 uebernehmen
 // Vektor mit relativen Positionen der Pixel eines quadratischen SEs fuellen
 // ---------------------------------------------------------------------------
+/*
 vector<pair<int,int> > create_square_SE(const unsigned int Diameter) {
   vector<pair<int,int> > ImageWindow;
   cerr << "Funktion create_square_SE aus Uebung 4 uebernehmen" << endl;
+}
+*/
+
+vector<pair<int,int> > create_square_SE(const unsigned int Diameter) {
+  vector<pair<int,int> > ImageWindow;
+  const int Radius = Diameter/2;
+  for (unsigned int dy = 0; dy<Diameter; dy++) {
+    for (unsigned int dx = 0; dx<Diameter; dx++) {
+      ImageWindow.push_back(pair<int,int>(dx-Radius,dy-Radius));
+    }
+  }
+   print_SE(ImageWindow);
+  return ImageWindow;
+}
+
+void print_SE(vector<pair<int, int> > ImageWindow)
+{
+        int MinY = ImageWindow[0].first;
+        int MaxY = ImageWindow[0].first;
+        int MinX = ImageWindow[0].second;
+        int MaxX = ImageWindow[0].second;
+
+        // Extreme bestimmen
+        for(unsigned int i = 1; i < ImageWindow.size(); i++) {
+                if(ImageWindow[i].first < MinY)  MinY = ImageWindow[i].first;
+                if(ImageWindow[i].first > MaxY)  MaxY = ImageWindow[i].first;
+                if(ImageWindow[i].second < MinX) MinX = ImageWindow[i].second;
+                if(ImageWindow[i].second > MaxX) MaxX = ImageWindow[i].second;
+        }
+
+        int Width  = MaxX - MinX + 1;
+        int Height = MaxY - MinY + 1;
+
+        char se_bitmap[Height][Width];
+        memset(se_bitmap, ' ', sizeof(se_bitmap));
+        for(unsigned int i = 0; i < ImageWindow.size(); i++) {
+                pair<int, int> Position = ImageWindow[i];
+                if((0 == Position.first) && (0 == Position.second))
+                        se_bitmap[Position.first - MinY][Position.second - MinX] = '#';
+                else
+                        se_bitmap[Position.first - MinY][Position.second - MinX] = '-';
+        }
+
+        // Ausgabe
+        for(int y = Height - 1; y >= 0; y--) {
+                for(int x = 0; x < Width; x++)
+                        cout << se_bitmap[y][x];
+                cout << endl;
+        }
 }
 
 // ---------------------------------------------------------------------------
 // Aus Uebung 4 uebernehmen
 // Erosion
 // ---------------------------------------------------------------------------
+/*
 template<typename Pixel>
 Img<Pixel> erode(const Img<Pixel> &src, const vector<pair<int,int> > &ImageWindow) {
   Img<Pixel> eroded(src.Width(),src.Height());
   cerr << "Template erode aus Uebung 4 uebernehmen" << endl;
+  return eroded;
+}
+*/
+
+template<typename Pixel>
+Img<Pixel> erode(const Img<Pixel> &src, const vector<pair<int,int> > &ImageWindow) {
+  Img<Pixel> eroded(src.Width(),src.Height());
+
+
+  for(int y=0;y<src.Height();y++){
+    for(int x=0;x<src.Width();x++){
+                int minimum = src[y+ ImageWindow[0].second][x + ImageWindow[0].first];
+        for(int i=1;i<ImageWindow.size();i++){
+                int window_x = x + ImageWindow[i].first;
+                int window_y = y + ImageWindow[i].second;
+                if(src[window_y][window_x] < minimum){
+                    minimum = src[window_y][window_x];
+                }
+        }
+
+                eroded[y][x] = minimum;
+
+    }
+  }
+  //cout << "Aufgabe 2: 'erode' noch nicht kodiert" << endl;
   return eroded;
 }
 
@@ -71,10 +231,37 @@ Img<Pixel> erode(const Img<Pixel> &src, const vector<pair<int,int> > &ImageWindo
 // Aus Uebung 4 uebernehmen
 // Dilation
 // ---------------------------------------------------------------------------
+/*
 template<typename Pixel>
 Img<Pixel> dilate(const Img<Pixel> &src, const vector<pair<int,int> > &ImageWindow) {
   Img<Pixel> dilated(src.Width(),src.Height());
   cerr << "Template dilate aus Uebung 4 uebernehmen" << endl;
+  return dilated;
+}
+*/
+
+template<typename Pixel>
+Img<Pixel> dilate(const Img<Pixel> &src, const vector<pair<int,int> > &ImageWindow) {
+  Img<Pixel> dilated(src.Width(),src.Height());
+
+  for(int y=0;y<src.Height();y++){
+    for(int x=0;x<src.Width();x++){
+                int maximum = src[y+ ImageWindow[0].second][x + ImageWindow[0].first];
+        for(int i=1;i<ImageWindow.size();i++){
+                int window_x = x + ImageWindow[i].first;
+                int window_y = y + ImageWindow[i].second;
+                if(src[window_y][window_x] > maximum){
+                    maximum = src[window_y][window_x];
+                }
+
+        }
+
+                dilated[y][x] = maximum;
+
+    }
+  }
+
+  //cout << "Aufgabe 2: 'dilate' noch nicht kodiert" << endl;
   return dilated;
 }
 
@@ -82,10 +269,24 @@ Img<Pixel> dilate(const Img<Pixel> &src, const vector<pair<int,int> > &ImageWind
 // Aus Uebung 4 uebernehmen
 // Bilddifferenz
 // ---------------------------------------------------------------------------
+/*
 template<typename Pixel>
 Img<Pixel> operator-(const Img<Pixel> &l, const Img<Pixel> &r) {
   Img<Pixel> d(l.Width(),l.Height());
   cerr << "Template operator- aus Uebung 4 uebernehmen" << endl;
+  return d;
+}
+*/
+template<typename Pixel>
+Img<Pixel> operator-(const Img<Pixel> &l, const Img<Pixel> &r) {
+  Img<Pixel> d(l.Width(),l.Height());
+  cout << "Aufgabe 5: 'operator -' noch nicht kodiert" << endl;
+
+  for(int x = 0; x < l.Width(); x++){
+    for(int y = 0; y < l.Height(); y++){
+        d[y][x] = l[y][x] - r[y][x];
+    }
+  }
   return d;
 }
 
@@ -189,7 +390,7 @@ unsigned int Labelling(Img<unsigned int>& label_image, vector <pair<int, int> >&
         }
     }
     return v2;
-} 
+}
 
 
 // ----------------------------------------------------------------------------------------------------
@@ -286,7 +487,16 @@ vector<unsigned int> count_MarginPixels(const Img<unsigned int>& label_image) {
   Img<unsigned int> inner_gradient_label_image;
   vector<unsigned int> Pixels;  // Vektor mit Anzahl-Zählern der einzelnen Objekte
 
-  cerr << "Funktion count_MarginPixels in Aufgabe 2 erstellen" << endl;
+    bild x = erode(labelbild,3x3SE);
+    interner_gradient = lablebild - x;
+
+    int array[256] histogramm;
+
+    for(each pixel in interner_gradient){
+    //if( pixle_wert > schwellwert)
+       histogramm[pixel_wert]++;
+
+    }
 
   return Pixels;
 }
