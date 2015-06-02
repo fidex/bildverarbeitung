@@ -1,0 +1,103 @@
+#ifndef _IEP_H_
+#define _IEP_H_
+
+enum {
+	IEP_ERR = 0,
+	IEP_OK = 1
+};
+
+enum {
+	//IEP_RQ_CLOSECONN = 'c',
+	IEP_RQ_QUITSRV = 'q',
+	IEP_RP_QUITSRV = 'Q',
+	IEP_RQ_GETIMG = 's',
+	IEP_RP_GETIMG = 'S',
+	IEP_RQ_OPENWIN = 'o',
+	IEP_RP_OPENWIN = 'O',
+	IEP_RQ_PUTIMG = 'i',
+	IEP_RP_PUTIMG = 'I',
+	IEP_RQ_CLOSEWIN = 'w',
+	IEP_RP_CLOSEWIN = 'W'
+};
+
+enum {
+	IEP_COLOR_BAYER = 0,
+	IEP_COLOR_RGB = 1,
+	IEP_COLOR_GRAY = 2,
+	IEP_COLOR_YCBCR = 3,
+	IEP_COLOR_BGR = 4
+};
+
+// all values in network byte order: do use htonl and htons!
+typedef struct {
+	uint16_t msg;
+	uint16_t type;
+	uint16_t color;
+	uint16_t width;
+	uint16_t height;
+	uint16_t handle;
+	uint32_t datalen;
+} iep_header_t;
+
+#define IEP_CN_MAX     512
+#define IEP_CN_SHIFT   3
+#define IEP_DEPTH_MAX  (1 << IEP_CN_SHIFT)
+
+#define IEP_8U   0
+#define IEP_8S   1
+#define IEP_16U  2
+#define IEP_16S  3
+#define IEP_32S  4
+#define IEP_32F  5
+#define IEP_64F  6
+#define IEP_USRTYPE1 7
+
+#define IEP_MAT_DEPTH_MASK       (IEP_DEPTH_MAX - 1)
+#define IEP_MAT_DEPTH(flags)     ((flags) & IEP_MAT_DEPTH_MASK)
+
+#define IEP_MAKETYPE(depth,cn) (IEP_MAT_DEPTH(depth) + (((cn)-1) << IEP_CN_SHIFT))
+#define IEP_MAKE_TYPE IEP_MAKETYPE
+
+#define IEP_8UC1 IEP_MAKETYPE(IEP_8U,1)
+#define IEP_8UC2 IEP_MAKETYPE(IEP_8U,2)
+#define IEP_8UC3 IEP_MAKETYPE(IEP_8U,3)
+#define IEP_8UC4 IEP_MAKETYPE(IEP_8U,4)
+#define IEP_8UC(n) IEP_MAKETYPE(IEP_8U,(n))
+
+#define IEP_8SC1 IEP_MAKETYPE(IEP_8S,1)
+#define IEP_8SC2 IEP_MAKETYPE(IEP_8S,2)
+#define IEP_8SC3 IEP_MAKETYPE(IEP_8S,3)
+#define IEP_8SC4 IEP_MAKETYPE(IEP_8S,4)
+#define IEP_8SC(n) IEP_MAKETYPE(IEP_8S,(n))
+
+#define IEP_16UC1 IEP_MAKETYPE(IEP_16U,1)
+#define IEP_16UC2 IEP_MAKETYPE(IEP_16U,2)
+#define IEP_16UC3 IEP_MAKETYPE(IEP_16U,3)
+#define IEP_16UC4 IEP_MAKETYPE(IEP_16U,4)
+#define IEP_16UC(n) IEP_MAKETYPE(IEP_16U,(n))
+
+#define IEP_16SC1 IEP_MAKETYPE(IEP_16S,1)
+#define IEP_16SC2 IEP_MAKETYPE(IEP_16S,2)
+#define IEP_16SC3 IEP_MAKETYPE(IEP_16S,3)
+#define IEP_16SC4 IEP_MAKETYPE(IEP_16S,4)
+#define IEP_16SC(n) IEP_MAKETYPE(IEP_16S,(n))
+
+#define IEP_32SC1 IEP_MAKETYPE(IEP_32S,1)
+#define IEP_32SC2 IEP_MAKETYPE(IEP_32S,2)
+#define IEP_32SC3 IEP_MAKETYPE(IEP_32S,3)
+#define IEP_32SC4 IEP_MAKETYPE(IEP_32S,4)
+#define IEP_32SC(n) IEP_MAKETYPE(IEP_32S,(n))
+
+#define IEP_32FC1 IEP_MAKETYPE(IEP_32F,1)
+#define IEP_32FC2 IEP_MAKETYPE(IEP_32F,2)
+#define IEP_32FC3 IEP_MAKETYPE(IEP_32F,3)
+#define IEP_32FC4 IEP_MAKETYPE(IEP_32F,4)
+#define IEP_32FC(n) IEP_MAKETYPE(IEP_32F,(n))
+
+#define IEP_64FC1 IEP_MAKETYPE(IEP_64F,1)
+#define IEP_64FC2 IEP_MAKETYPE(IEP_64F,2)
+#define IEP_64FC3 IEP_MAKETYPE(IEP_64F,3)
+#define IEP_64FC4 IEP_MAKETYPE(IEP_64F,4)
+#define IEP_64FC(n) IEP_MAKETYPE(IEP_64F,(n))
+
+#endif

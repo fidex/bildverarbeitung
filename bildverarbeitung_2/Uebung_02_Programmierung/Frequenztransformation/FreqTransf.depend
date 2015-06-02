@@ -1,0 +1,57 @@
+# depslib dependency file v1.0
+1429048455 source:c:\users\fidex\documents\netbeansprojects\bilverarbeitung\bildverarbeitung\bildverarbeitung_2\uebung_02_programmierung\frequenztransformation\main_vorgabe.cpp
+	<iostream>
+	<cmath>
+	<queue>
+	<string>
+	<vector>
+	<iostream>
+	<fstream>
+	<algorithm>
+	"Img.h"
+	"BmpRead.h"
+	"ConvImg.h"
+	"BmpWrite.h"
+	"FFT.h"
+	"AviWrite.h"
+	<camera.h>
+
+1429048455 c:\users\fidex\documents\netbeansprojects\bilverarbeitung\bildverarbeitung\bildverarbeitung_2\uebung_02_programmierung\include\img.h
+	"Position.h"
+
+1429048455 c:\users\fidex\documents\netbeansprojects\bilverarbeitung\bildverarbeitung\bildverarbeitung_2\uebung_02_programmierung\include\position.h
+
+1429048455 c:\users\fidex\documents\netbeansprojects\bilverarbeitung\bildverarbeitung\bildverarbeitung_2\uebung_02_programmierung\include\bmpread.h
+	"FileIO.h"
+	"Img.h"
+	"RGB_Pixel.h"
+
+1429048455 c:\users\fidex\documents\netbeansprojects\bilverarbeitung\bildverarbeitung\bildverarbeitung_2\uebung_02_programmierung\include\fileio.h
+	<stdio.h>
+
+1429048455 c:\users\fidex\documents\netbeansprojects\bilverarbeitung\bildverarbeitung\bildverarbeitung_2\uebung_02_programmierung\include\rgb_pixel.h
+
+1429048455 c:\users\fidex\documents\netbeansprojects\bilverarbeitung\bildverarbeitung\bildverarbeitung_2\uebung_02_programmierung\include\convimg.h
+	<utility>
+	<Img.h>
+	<RGB_Pixel.h>
+
+1429048455 c:\users\fidex\documents\netbeansprojects\bilverarbeitung\bildverarbeitung\bildverarbeitung_2\uebung_02_programmierung\include\bmpwrite.h
+	<stdio.h>
+	"FileIO.h"
+	"Img.h"
+	"RGB_Pixel.h"
+	<vector>
+
+1429048455 c:\users\fidex\documents\netbeansprojects\bilverarbeitung\bildverarbeitung\bildverarbeitung_2\uebung_02_programmierung\include\fft.h
+	"Img.h"
+	<complex>
+	<vector>
+
+1429048455 c:\users\fidex\documents\netbeansprojects\bilverarbeitung\bildverarbeitung\bildverarbeitung_2\uebung_02_programmierung\include\aviwrite.h
+	"FileIO.h"
+	"Img.h"
+	"RGB_Pixel.h"
+
+1429048455 c:\users\fidex\documents\netbeansprojects\bilverarbeitung\bildverarbeitung\bildverarbeitung_2\uebung_02_programmierung\kamera\camera.h
+
